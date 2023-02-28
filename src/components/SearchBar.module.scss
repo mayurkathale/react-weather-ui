@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  justify-content: center;
+  input {
+    padding: 0px 10px;
+    background: rgb(244, 242, 242);
+    border-radius: 15px;
+    border: none;
+    color: #c4c4c4;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    width: 400px;
+    height: 46px;
+    &:focus-visible {
+      outline: none;
+    }
+  }
+}

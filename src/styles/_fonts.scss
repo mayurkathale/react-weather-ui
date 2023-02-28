@@ -1,0 +1,12 @@
+@mixin font-face($family, $file, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: $family;
+    src: url('../assets/fonts/Poppins/Poppins-' + $file + '.ttf');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+@include font-face('Poppins', 'Regular');
+@include font-face('PoppinsBold', 'Bold', 700, normal);
+@include font-face('PoppinsExtraBold', 'ExtraBold', 800, normal);

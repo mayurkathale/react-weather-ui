@@ -1,0 +1,64 @@
+@import '../styles/index.scss';
+.card {
+  width: 100%;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  font-family: 'Poppins';
+  background: linear-gradient(
+    167.44deg,
+    #08244f 0%,
+    #134cb5 47.38%,
+    #0b42ab 100%
+  );
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: #ffffff;
+
+  .cardHeader {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .city {
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 45px;
+    letter-spacing: 0em;
+    text-align: center;
+  }
+
+  .temperature {
+    font-size: 70px;
+    font-weight: 500;
+    line-height: 105px;
+    letter-spacing: 0em;
+    text-align: center;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .imgContent {
+    display: flex;
+    line-height: 24px;
+  }
+
+  .detail {
+    font-style: normal;
+    font-weight: 500;
+    text-transform: capitalize;
+
+    :first-child {
+      font-size: 18px;
+      line-height: 18px;
+    }
+
+    :last-child {
+      font-size: 18px;
+      line-height: 18px;
+    }
+  }
+}
