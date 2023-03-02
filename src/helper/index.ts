@@ -1,3 +1,4 @@
+import moment from 'moment-timezone';
 import { CitiesState, WeatherData } from '../types';
 
 const weatherType: any = {
@@ -60,4 +61,33 @@ export const DataDaily = (data: WeatherData): any[] => {
   return weathercodes.map((wc, i) => {
     return { weathercode: wc, min: min[i], max: max[i], time: time[i] };
   });
+};
+
+export const GetCurrentTime = (timezone: string): string => {
+  let options = {
+      timeZone: timezone,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    } as Intl.DateTimeFormatOptions,
+    formatter = new Intl.DateTimeFormat([], options);
+  return formatter.format(new Date());
+};
+
+export const IsDay = (
+  timezone: string,
+  sunrise: string,
+  sunset: string
+): boolean => {
+  const currentTime = new Date(moment().tz(timezone).format());
+  const sunriseTime = new Date(
+    moment(new Date(sunrise)).tz(timezone, true).format()
+  );
+  const sunsetTime = new Date(
+    moment(new Date(sunset)).tz(timezone, true).format()
+  );
+  return sunriseTime < currentTime && sunsetTime > currentTime;
 };

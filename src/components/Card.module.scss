@@ -21,18 +21,10 @@
     justify-content: space-between;
   }
 
-  .city {
-    font-size: 30px;
-    font-weight: 600;
-    line-height: 45px;
-    letter-spacing: 0em;
-    text-align: center;
-  }
-
   .temperature {
     font-size: 70px;
     font-weight: 500;
-    line-height: 105px;
+    line-height: 80px;
     letter-spacing: 0em;
     text-align: center;
   }
@@ -68,5 +60,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     height: 30px;
+    :first-child {
+      text-align: justify;
+    }
+    :last-child {
+      text-align: right;
+    }
   }
 }

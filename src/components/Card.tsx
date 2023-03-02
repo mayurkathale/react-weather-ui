@@ -6,9 +6,18 @@ import rain from '../assets/rain.png';
 import humid from '../assets/humidity.png';
 import wind from '../assets/wind.png';
 import { CitiesState } from '../types';
-import { GetApiUrl, GetHourlyIndex, DataHourly, DataDaily } from '../helper';
+import {
+  GetApiUrl,
+  GetHourlyIndex,
+  DataHourly,
+  DataDaily,
+  GetWeatherType,
+  GetCurrentTime,
+  IsDay,
+} from '../helper';
 import useFetch from '../hooks/useFetch.hook';
 import Moment from 'react-moment';
+import Temp from './Temp';
 
 interface Props {
   city: CitiesState;
@@ -27,17 +36,22 @@ const Card = ({ city }: Props) => {
     hourlyIndex && (
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <div style={{ textAlign: 'justify' }}>City</div>
-          <div style={{ textAlign: 'right' }}>-</div>
+          <div style={{ textAlign: 'justify' }}>{city.name}</div>
+          <div style={{ textAlign: 'right' }}>
+            <Moment format="H:mm">{GetCurrentTime(data.timezone)}</Moment>
+          </div>
         </div>
+        {IsDay(data.timezone, data.daily.sunrise[0], data.daily.sunset[0])
+          ? 'isday'
+          : 'is night'}
         <WeatherImage type="cloudy" width="30%" />
-        <div className={styles.city}>{city.name}</div>
+        <div>{GetWeatherType(data.current_weather.weathercode)}</div>
         <div className={styles.temperature}>
-          {data.current_weather.temperature}
+          <Temp temp={data.current_weather.temperature} />
         </div>
         <div>
-          Max: {data.daily.temperature_2m_max[0]} Min:{' '}
-          {data.daily.temperature_2m_min[0]}
+          Max: <Temp temp={data.daily.temperature_2m_max[0]} /> Min:{' '}
+          <Temp temp={data.daily.temperature_2m_min[0]} />
         </div>
         <WeatherDetails>
           <div className={styles.imgContent}>
@@ -56,7 +70,9 @@ const Card = ({ city }: Props) => {
         <WeatherDetails title="Today" subtitle="Mon, 27">
           {DataHourly(data, hourlyIndex).map((data) => (
             <div className={styles.detail}>
-              <div>{data.temp}</div>
+              <div>
+                <Temp temp={data.temp} />
+              </div>
               <WeatherImage type="cloudy" width="24" />
               <div>
                 <Moment format="hh:mm">{data.time}</Moment>
@@ -76,19 +92,12 @@ const Card = ({ city }: Props) => {
                 </div>
                 <div>{daily.weathercode}</div>
                 <div>
-                  {daily.max} {daily.min}
+                  <Temp temp={daily.max} /> <Temp temp={daily.min} />
                 </div>
               </div>
             ))}
           </div>
         </WeatherDetails>
-        <div className={styles.sunDetails}></div>
-        <div className={styles.content}>
-          <span>Length of day:</span> 13H 12M
-        </div>
-        <div className={styles.content}>
-          <span>Remaining daylight:</span> 9H 22M
-        </div>
       </div>
     )
   );

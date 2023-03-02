@@ -12,7 +12,7 @@ const Homepage = () => {
       <SearchBar />
       <div className={styles.container}>
         {cities.length > 0 &&
-          cities.map((city) => <Card city={city} key={city.latitude} />)}
+          cities.map((city, i) => <Card city={city} key={i} />)}
         {cities.length < 4 && 'ADD'}
       </div>
     </React.Fragment>
