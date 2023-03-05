@@ -60,24 +60,25 @@ const SearchBar = () => {
       {results && showDropdown && search.length > 3 && (
         <ul className={styles.autoContainer}>
           {loading && <Loading />}
-          {results.map((result: any, i) => {
-            let style: any = {};
-            if (i % 2) {
-              style.className = `${styles.odd} ${styles.list}`;
-            } else {
-              style.className = `${styles.list}`;
-            }
-            const image = `https://assets.open-meteo.com/images/country-flags/${result.country_code.toLowerCase()}.svg`;
-            return (
-              <li
-                {...style}
-                key={result.id}
-                onClick={() => handleCityClick(result)}
-              >
-                <img src={image} alt="flag" /> {result.name}
-              </li>
-            );
-          })}
+          {!loading &&
+            results.map((result: any, i) => {
+              let style: any = {};
+              if (i % 2) {
+                style.className = `${styles.odd} ${styles.list}`;
+              } else {
+                style.className = `${styles.list}`;
+              }
+              const image = `https://assets.open-meteo.com/images/country-flags/${result.country_code.toLowerCase()}.svg`;
+              return (
+                <li
+                  {...style}
+                  key={result.id}
+                  onClick={() => handleCityClick(result)}
+                >
+                  <img src={image} alt="flag" /> {result.name}
+                </li>
+              );
+            })}
         </ul>
       )}
     </div>
