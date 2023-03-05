@@ -11,7 +11,6 @@
     #0b42ab 100%
   );
   border-radius: 10px;
-  padding: 10px 20px;
   color: #ffffff;
   box-sizing: border-box;
 
@@ -53,13 +52,13 @@
     font-weight: 500;
     text-transform: capitalize;
     :first-child {
-      font-size: 18px;
-      line-height: 18px;
+      font-size: 14px;
+      line-height: 14px;
     }
 
     :last-child {
-      font-size: 18px;
-      line-height: 18px;
+      font-size: 14px;
+      line-height: 14px;
     }
     width: 100%;
   }

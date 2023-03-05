@@ -1,0 +1,30 @@
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+
+@mixin respond($breakpoint) {
+  @if $breakpoint==wide {
+    @media only screen and (max-width: $xl) {
+      @content;
+    }
+  }
+
+  @if $breakpoint==desktop {
+    @media only screen and (max-width: $lg) {
+      @content;
+    }
+  }
+
+  @if $breakpoint==tablet {
+    @media only screen and (max-width: $md) {
+      @content;
+    }
+  }
+
+  @if $breakpoint==mobile {
+    @media only screen and (max-width: $sm) {
+      @content;
+    }
+  }
+}
