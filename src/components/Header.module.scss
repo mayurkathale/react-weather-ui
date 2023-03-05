@@ -1,3 +1,15 @@
 .header {
-  height: 30px;
+  height: 70px;
+  font-size: 30px;
+  background: linear-gradient(
+    167.44deg,
+    #08244f 0%,
+    #134cb5 47.38%,
+    #0b42ab 100%
+  );
+  color: #fff;
+  font-family: 'Poppins';
+  padding: 0rem 3rem;
+  display: flex;
+  align-items: center;
 }

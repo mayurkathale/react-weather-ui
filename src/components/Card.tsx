@@ -5,7 +5,7 @@ import WeatherDetails from './WeatherDetails';
 import rain from '../assets/rain.png';
 import humid from '../assets/humidity.png';
 import wind from '../assets/wind.png';
-import { CitiesState } from '../types';
+import { CitiesState, WeatherData } from '../types';
 import {
   GetApiUrl,
   GetHourlyIndex,
@@ -18,88 +18,136 @@ import {
 import useFetch from '../hooks/useFetch.hook';
 import Moment from 'react-moment';
 import Temp from './Temp';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
+import { removeCity } from '../store/actions/city.actions';
+import React from 'react';
+import Loading from './Loading';
 
 interface Props {
   city: CitiesState;
 }
+interface FetchedWeatherData {
+  data: WeatherData;
+  error: any;
+  loading: any;
+}
 
 const Card = ({ city }: Props) => {
   const url = GetApiUrl(city);
-  const { data, error, loading } = useFetch(url);
+  const { data, loading }: FetchedWeatherData = useFetch(url);
+  const dispatch = useDispatch();
   let hourlyIndex;
   if (data) {
     hourlyIndex = GetHourlyIndex(data);
-    console.log(data.current_weather.time);
   }
+
+  const handleCardDelete = (id: number): void => {
+    dispatch(removeCity(id));
+  };
+
   return (
-    data &&
-    hourlyIndex && (
-      <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <div style={{ textAlign: 'justify' }}>{city.name}</div>
-          <div style={{ textAlign: 'right' }}>
-            <Moment format="H:mm">{GetCurrentTime(data.timezone)}</Moment>
-          </div>
-        </div>
-        {IsDay(data.timezone, data.daily.sunrise[0], data.daily.sunset[0])
-          ? 'isday'
-          : 'is night'}
-        <WeatherImage type="cloudy" width="30%" />
-        <div>{GetWeatherType(data.current_weather.weathercode)}</div>
-        <div className={styles.temperature}>
-          <Temp temp={data.current_weather.temperature} />
-        </div>
-        <div>
-          Max: <Temp temp={data.daily.temperature_2m_max[0]} /> Min:{' '}
-          <Temp temp={data.daily.temperature_2m_min[0]} />
-        </div>
-        <WeatherDetails>
-          <div className={styles.imgContent}>
-            <img src={rain} width="24" alt="rain" />{' '}
-            {data.daily.precipitation_probability_max[0]}%
-          </div>
-          <div className={styles.imgContent}>
-            <img src={humid} width="24" alt="rain" />{' '}
-            {data.hourly.relativehumidity_2m[hourlyIndex]}%
-          </div>
-          <div className={styles.imgContent}>
-            <img src={wind} width="24" alt="rain" />{' '}
-            {data.current_weather.windspeed} km/h
-          </div>
-        </WeatherDetails>
-        <WeatherDetails title="Today" subtitle="Mon, 27">
-          {DataHourly(data, hourlyIndex).map((data) => (
-            <div className={styles.detail}>
-              <div>
-                <Temp temp={data.temp} />
-              </div>
-              <WeatherImage type="cloudy" width="24" />
-              <div>
-                <Moment format="hh:mm">{data.time}</Moment>
-              </div>
+    <React.Fragment>
+      {loading && <Loading />}
+      {!loading && data && hourlyIndex !== undefined && (
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <div>{city.name}</div>
+            <div>
+              <Moment format="H:mm">{GetCurrentTime(data.timezone)}</Moment>
             </div>
-          ))}
-        </WeatherDetails>
-        <WeatherDetails
-          title="Next Forecast"
-          subtitle={<img src={calender} width="24" alt="calendar" />}
-        >
-          <div className={styles.detail}>
-            {DataDaily(data).map((daily) => (
-              <div className={styles.dailyRecord}>
+            <div>
+              <AiOutlineDelete
+                size={20}
+                style={{ color: 'red' }}
+                onClick={() => handleCardDelete(city.id)}
+              />
+            </div>
+          </div>
+          <WeatherImage
+            day={IsDay(
+              data.timezone,
+              data.daily.sunrise[0],
+              data.daily.sunset[0]
+            )}
+            code={data.current_weather.weathercode}
+            width="30%"
+          />
+          <div>
+            {GetWeatherType(data.current_weather.weathercode)
+              .split(' ')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ')}
+          </div>
+          <div className={styles.temperature}>
+            <Temp temp={data.current_weather.temperature} />
+          </div>
+          <div>
+            Max: <Temp temp={data.daily.temperature_2m_max[0]} /> Min:{' '}
+            <Temp temp={data.daily.temperature_2m_min[0]} />
+          </div>
+          <WeatherDetails>
+            <div className={styles.imgContent}>
+              <img src={rain} width="24" alt="rain" />{' '}
+              {data.daily.precipitation_probability_max[0]}%
+            </div>
+            <div className={styles.imgContent}>
+              <img src={humid} width="24" alt="rain" />{' '}
+              {data.hourly.relativehumidity_2m[hourlyIndex]}%
+            </div>
+            <div className={styles.imgContent}>
+              <img src={wind} width="24" alt="rain" />{' '}
+              {data.current_weather.windspeed} km/h
+            </div>
+          </WeatherDetails>
+          <WeatherDetails title="Today" subtitle="Mon, 27">
+            {DataHourly(data, hourlyIndex).map((hourlyData, i) => (
+              <div className={`${styles.detail} ${styles.center}`} key={i}>
                 <div>
-                  <Moment format="ddd, d">{daily.time}</Moment>
+                  <Temp temp={hourlyData.temp} />
                 </div>
-                <div>{daily.weathercode}</div>
+                <WeatherImage
+                  day={IsDay(
+                    data.timezone,
+                    data.daily.sunrise[0],
+                    data.daily.sunset[0]
+                  )}
+                  code={hourlyData.weathercode}
+                  width="24"
+                />
                 <div>
-                  <Temp temp={daily.max} /> <Temp temp={daily.min} />
+                  <Moment format="hh:mm">{hourlyData.time}</Moment>
                 </div>
               </div>
             ))}
-          </div>
-        </WeatherDetails>
-      </div>
-    )
+          </WeatherDetails>
+          <WeatherDetails
+            title="Next Forecast"
+            subtitle={<img src={calender} width="24" alt="calendar" />}
+          >
+            <div className={styles.detail}>
+              {DataDaily(data).map((daily, i) => (
+                <div className={styles.dailyRecord} key={i}>
+                  <div>
+                    <Moment format="ddd, D">{daily.time}</Moment>
+                  </div>
+                  <div>
+                    <WeatherImage
+                      code={daily.weathercode}
+                      day={true}
+                      width="22"
+                    />
+                  </div>
+                  <div>
+                    <Temp temp={daily.max} /> <Temp temp={daily.min} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </WeatherDetails>
+        </div>
+      )}
+    </React.Fragment>
   );
 };
 

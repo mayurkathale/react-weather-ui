@@ -2,4 +2,16 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   column-gap: 20px;
+  padding: 30px 40px;
+  .addButtonBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 793px;
+    font-family: 'Poppins';
+    svg {
+      cursor: pointer;
+    }
+  }
 }

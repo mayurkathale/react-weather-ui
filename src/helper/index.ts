@@ -32,7 +32,42 @@ const weatherType: any = {
   '99': 'Thunderstorm with hail',
 };
 
-export const GetWeatherType = (id: string): string => {
+const weatherImg: any = {
+  '0': ['clear-day', 'clear-night'],
+  '1': ['clear-day', 'clear-night'],
+  '2': ['partly-cloudy-day', 'partly-cloudy-night'],
+  '3': ['overcast-day', 'overcast-night'],
+  '45': ['fog-day', 'fog-night'],
+  '48': ['haze-day', 'haze-nightd'],
+  '51': ['partly-cloudy-day-drizzle', 'partly-cloudy-night-drizzle'],
+  '53': ['partly-cloudy-day-drizzle', 'partly-cloudy-night-drizzle'],
+  '55': ['partly-cloudy-day-drizzle', 'partly-cloudy-night-drizzle'],
+  '56': ['partly-cloudy-day-drizzle', 'partly-cloudy-night-drizzle'],
+  '57': ['partly-cloudy-day-drizzle', 'partly-cloudy-night-drizzle'],
+  '61': ['partly-cloudy-day-rain', 'partly-cloudy-night-rain'],
+  '63': ['partly-cloudy-day-rain', 'partly-cloudy-night-rain'],
+  '65': ['partly-cloudy-day-rain', 'partly-cloudy-night-rain'],
+  '66': ['partly-cloudy-day-rain', 'partly-cloudy-night-rain'],
+  '67': ['partly-cloudy-day-rain', 'partly-cloudy-night-rain'],
+  '71': ['partly-cloudy-day-snow', 'partly-cloudy-night-snow'],
+  '73': ['partly-cloudy-day-snow', 'partly-cloudy-night-snow'],
+  '75': ['partly-cloudy-day-snow', 'partly-cloudy-night-snow'],
+  '77': ['hail', 'hail'],
+  '80': ['partly-cloudy-day-rain', 'partly-cloudy-night-rain'],
+  '81': ['partly-cloudy-day-rain', 'partly-cloudy-night-rain'],
+  '82': ['partly-cloudy-day-rain', 'partly-cloudy-night-rain'],
+  '85': ['partly-cloudy-day-snow', 'partly-cloudy-night-snow'],
+  '86': ['partly-cloudy-day-snow', 'partly-cloudy-night-snow'],
+  '95': ['thunderstorms-day', 'thunderstorms-night'],
+  '96': ['thunderstorms-day-rain', 'thunderstorms-rain'],
+  '99': ['thunderstorms-day-rain', 'thunderstorms-rain'],
+};
+
+export const GetWeatherImageUrl = (code: number, day: boolean) => {
+  return `../assets/${weatherImg[code][day ? 0 : 1]}.svg`;
+};
+
+export const GetWeatherType = (id: number): string => {
   return weatherType[id];
 };
 
@@ -49,7 +84,7 @@ export const DataHourly = (data: WeatherData, idx: number): any[] => {
   const temp: number[] = data.hourly.temperature_2m.slice(idx + 1, idx + 5);
   const time: string[] = data.hourly.time.slice(idx + 1, idx + 5);
   return weathercodes.map((wc, i) => {
-    return { weathercode: wc[i], temp: temp[i], time: time[i] };
+    return { weathercode: wc, temp: temp[i], time: time[i] };
   });
 };
 

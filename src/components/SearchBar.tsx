@@ -1,7 +1,12 @@
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCity } from '../store/actions/city.actions';
+import {
+  addCity,
+  showAddItem,
+  showDropDown,
+} from '../store/actions/city.actions';
 import { CitiesState, StoreState } from '../types';
+import Loading from './Loading';
 import styles from './SearchBar.module.scss';
 
 const SearchBar = () => {
@@ -10,7 +15,9 @@ const SearchBar = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-  const city = useSelector((state: StoreState) => state.city.cities);
+  const showDropdown = useSelector(
+    (state: StoreState) => state.city.showDropdown
+  );
 
   const searchKeyDownHandler = async (
     event: React.FormEvent<HTMLInputElement>
@@ -19,11 +26,12 @@ const SearchBar = () => {
       setSearch(searchRef.current.value);
       if (searchRef.current.value.length > 3) {
         setLoading(true);
+        dispatch(showDropDown(true));
         const response = await fetch(
           `https://geocoding-api.open-meteo.com/v1/search?name=${searchRef.current.value}`
         );
-        const temp: any = await response.json();
-        setResults(temp.results);
+        const res: any = await response.json();
+        setResults(res.results);
         setLoading(false);
       }
     }
@@ -34,7 +42,9 @@ const SearchBar = () => {
     const filtered = Object.fromEntries(
       allowed.map((k) => [k, result[k]])
     ) as CitiesState;
+    dispatch(showDropDown(false));
     dispatch(addCity(filtered));
+    dispatch(showAddItem());
   };
 
   return (
@@ -47,9 +57,9 @@ const SearchBar = () => {
         onChange={searchKeyDownHandler}
         value={search}
       />
-      {search.length > 3 && (
+      {results && showDropdown && search.length > 3 && (
         <ul className={styles.autoContainer}>
-          {loading && <div>Loading...</div>}
+          {loading && <Loading />}
           {results.map((result: any, i) => {
             let style: any = {};
             if (i % 2) {

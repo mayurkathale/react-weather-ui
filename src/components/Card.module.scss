@@ -1,7 +1,6 @@
 @import '../styles/index.scss';
 .card {
   width: 100%;
-  margin: 10px;
   padding: 10px;
   text-align: center;
   font-family: 'Poppins';
@@ -19,6 +18,16 @@
   .cardHeader {
     display: flex;
     justify-content: space-between;
+    :first-child {
+      text-align: justify;
+    }
+    :nth-child(2) {
+      text-align: center;
+    }
+    :last-child {
+      text-align: right;
+      cursor: pointer;
+    }
   }
 
   .temperature {
@@ -43,7 +52,6 @@
     font-style: normal;
     font-weight: 500;
     text-transform: capitalize;
-
     :first-child {
       font-size: 18px;
       line-height: 18px;
@@ -54,6 +62,13 @@
       line-height: 18px;
     }
     width: 100%;
+  }
+
+  .center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .dailyRecord {

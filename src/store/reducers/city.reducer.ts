@@ -3,9 +3,8 @@ import { ACTIONS } from '../constants/action-types';
 
 const initialState: CityReducerState = {
   cities: [],
-  data: [],
-  showAdd: true,
-  showDropdown: true,
+  showAdd: false,
+  showDropdown: false,
 };
 
 export const CityReducer = (
@@ -17,9 +16,16 @@ export const CityReducer = (
       return { ...state, cities: [...state.cities, payload] };
 
     case ACTIONS.REMOVE_CITY:
-      const i = state.cities.findIndex((city: any) => city.id === payload);
-      const newCities = state.cities.slice(i, 1);
-      return state;
+      return {
+        ...state,
+        cities: [...state.cities.filter((city: any) => city.id !== payload)],
+      };
+
+    case ACTIONS.SHOW_DROPDOWN:
+      return { ...state, showDropdown: payload };
+
+    case ACTIONS.SHOW_ADD_ITEM:
+      return { ...state, showAdd: !state.showAdd };
 
     default:
       return state;

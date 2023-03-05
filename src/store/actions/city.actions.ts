@@ -8,9 +8,23 @@ export const addCity = (city: CitiesState) => {
   };
 };
 
-export const removeCity = (id: number) => {
+export const removeCity = (city: number) => {
   return {
     type: ACTIONS.REMOVE_CITY,
-    payload: id,
+    payload: city,
+  };
+};
+
+export const showDropDown = (payload: boolean) => {
+  return {
+    type: ACTIONS.SHOW_DROPDOWN,
+    payload: payload,
+  };
+};
+
+export const showAddItem = () => {
+  return {
+    type: ACTIONS.SHOW_ADD_ITEM,
+    payload: {},
   };
 };

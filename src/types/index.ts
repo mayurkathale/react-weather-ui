@@ -4,7 +4,6 @@ export type StoreState = {
 
 export type CityReducerState = {
   cities: CitiesState[];
-  data: [];
   showAdd: boolean;
   showDropdown: boolean;
 };
@@ -36,6 +35,7 @@ export type WeatherData = {
     time: [string];
     temperature_2m: [number];
     weathercode: [number];
+    relativehumidity_2m: [number];
   };
   daily: {
     time: [string];
